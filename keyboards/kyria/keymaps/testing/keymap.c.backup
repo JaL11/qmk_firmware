@@ -14,8 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
-#include "keymap_german.h"
-#include "sendstring_german.h"
 
 enum layers {
     _QWERTY = 0,
@@ -24,75 +22,46 @@ enum layers {
     _ADJUST
 };
 
-
-// Tap Dance declarations
-// enum {
-//     TD_ESC_CAPS,
-// };
-
-// // Tap Dance definitions
-// qk_tap_dance_action_t tap_dance_actions[] = {
-//     // Tap once for Escape, twice for Caps Lock
-//     [TD_ESC_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS),
-// };
-
-
-/*TODO:
-* add 'ae' 'oe' 'ue' to 'a' 'o' 'u'
-*   - turn on unicode and creat unicode map for german and other characters see: https://github.com/Dakes/kyria/blob/main/keymaps/dakes/keymap.c   and   https://docs.qmk.fm/#/feature_unicode
-* work on layer customisation
-
-* Look into Audio https://docs.qmk.fm/#/feature_audio
-*/
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
  * Base Layer: QWERTY
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |GRAVE_ESC|  Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  - _   |
+ * |RAIS/ESC|   Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  | \   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |LSft(TAB)|  A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  ' "   |
+ * |Ctrl/BS |   A  |   S  |  D   |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |Ctrl(TAB)|  Z  |   X  |   C  |   V  |   B  | Meta |LShift|  |LShift|LShift|   N  |   M  | ,  < | . >  | /  ? |LSft(|\)|
+ * | LShift |   Z  |   X  |   C  |   V  |   B  |LShift|LShift|  |LShift|LShift|   N  |   M  | ,  < | . >  | /  ? |  - _   |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        | GUI  | Del  | Enter| Space| Esc  |  | Enter| Space| Tab  | Bksp | AltGr|
  *                        |      |      | Alt  | Lower| Raise|  | Lower| Raise|      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
- /*
- * Troubleshooting: 
- * - Get German keys working Currently only printing us chars
- *
- */    [_QWERTY] = LAYOUT(
-
-      //TD(TD_ESC_CAPS)
-      KC_GESC,       KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                  KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_MINS,
-      SFT_T(KC_TAB),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,        KC_H,    KC_J,    KC_K,  KC_L,  KC_SCLN, KC_QUOT,
-/*Home row mod:*/
-// SFT_T(KC_TAB),  LGUI_T(KC_A),   ALT_T(KC_S), LCTL_T(KC_D), SFT_T(KC_F), LT(_LOWER, KC_G),   LT(_RAISE,KC_H), SFT_T(KC_J), LCTL_T(KC_K), ALT_T(KC_L), LGUI_T(KC_SCLN), KC_QUOT,
-      MT(MOD_LCTL, KC_TAB), KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,   KC_LSFT,     KC_LSFT, KC_LSFT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_LSFT, KC_PIPE),
-        KC_MEDIA_PLAY_PAUSE, KC_LGUI, MT(MOD_LALT, KC_ENT), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ESC),   LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_BSPC,  KC_DEL,  KC_RALT
+    [_QWERTY] = LAYOUT(
+      LT(_RAISE, KC_ESC),       KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_PIPE,
+      MT(MOD_LCTL, KC_BSPC),   KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+      KC_LSFT,                 KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_LSFT,   KC_LSFT, KC_LSFT, KC_LSFT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
+              KC_LGUI, KC_DEL, MT(MOD_LALT, KC_ENT), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ESC), LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_TAB,  KC_BSPC, KC_RALT
     ),
-/* 
+/*
  * Lower Layer: Symbols
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |  !   |  @   |  {   |  }   |  |   |                              |   Ä  |   Ö  |   Ü  |   ß  |      |  =  +  |
+ * |        |  !   |  @   |  {   |  }   |  |   |                              |      |      |      |      |      |  | \   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |  #   |  $   |  (   |  )   |  `   |                              |   +  |  -   |  /   |  *   |  %   |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |        |  %   |  ^   |  [   |  ]   |  ~   |      |      |  |      |      |   &  |  =   |  ,   |  .   |  / ? | - _    |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |  ;   |  =   |  |  =   |  ;   |      |      |SLEEP |
+ *                        |      |      |      |  ;   |  =   |  |  =   |  ;   |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_LOWER] = LAYOUT(
-      _______, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     DE_ADIA, DE_ODIA, DE_UDIA, DE_SS,   _______, KC_EQL,
+      _______, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     _______, _______, _______, _______, _______, KC_BSLS,
       _______, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,                                      KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_PERC, KC_QUOT,
       _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, _______, _______, _______, _______, KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
-                                 _______, _______, _______, KC_SCLN, KC_EQL,  KC_EQL,  KC_SCLN, _______, _______, KC_SYSTEM_SLEEP
+                                 _______, _______, _______, KC_SCLN, KC_EQL,  KC_EQL,  KC_SCLN, _______, _______, _______
     ),
 /*
  * Raise Layer: Number keys, media, navigation
@@ -160,17 +129,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
-
-/* The encoder_update_user is a function.
- * It'll be called by QMK every time you turn the encoder.
- *
- * The index parameter tells you which encoder was turned. If you only have
- * one encoder, the index will always be zero.
- * 
- * The clockwise parameter tells you the direction of the encoder. It'll be
- * true when you turned the encoder clockwise, and false otherwise.
- */
-
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 	return OLED_ROTATION_180;
@@ -211,10 +169,10 @@ static void render_status(void) {
             oled_write_P(PSTR("Default\n"), false);
             break;
         case _LOWER:
-            oled_write_P(PSTR("Lower-Symbols\n"), false);
+            oled_write_P(PSTR("Lower\n"), false);
             break;
         case _RAISE:
-            oled_write_P(PSTR("Raise-Numbers\n"), false);
+            oled_write_P(PSTR("Raise\n"), false);
             break;
         case _ADJUST:
             oled_write_P(PSTR("Adjust\n"), false);
@@ -235,7 +193,7 @@ void oled_task_user(void) {
         render_status(); // Renders the current keyboard state (layer, lock, caps, scroll, etc)
     } else {
         render_kyria_logo();
-        }
+    }
 }
 #endif
 
@@ -259,63 +217,3 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     }
 }
 #endif
-
-
-// #ifdef ENCODER_ENABLE
-// void encoder_update_user(uint8_t index, bool clockwise) {
-//     if (index == 0) {
-//         switch (get_highest_layer(layer_state)) {
-//             case QWERTY:
-//                 if (clockwise) { // Ctrl + I
-//                     tap_code16(C(KC_I));
-//                 } else { // Shift + F3
-//                     tap_code16(S(KC_F3));
-//                 }
-//                 break;
-//             case LOWER:
-//                 // History scrubbing. For Adobe products, hold shift while moving
-//                 // backward to go forward instead.
-//                 if (clockwise) {
-//                     tap_code16(C(KC_Y));
-//                 } else {
-//                     tap_code16(C(KC_Z));
-//                 }
-//                 break;
-//             case RAISE:
-//                  if (clockwise) { // Subscript: CTRL + =
-//                     tap_code16(C(KC_EQL));
-//                 }
-//                 break;
-//             default:
-//                 // Nothing
-//                 break;
-//         }
-//     } else if (index == 1) {
-//         switch (get_highest_layer(layer_state)) {
-//             case QWERTY:
-//                 // Scroll by letter horizontally
-//                 if (clockwise) {
-//                     tap_code16(KC_RGHT);
-//                 } else {
-//                     tap_code16(KC_LEFT);
-//                 }
-//             case LOWER:
-//                 // Nothing
-//                 break;
-//             case RAISE:
-//                 // Find previous/Find next
-//                 if (clockwise) {
-//                     tap_code(KC_F3);
-//                 } else {
-//                     tap_code16(S(KC_F3));
-//                 }
-//             default:
-//                 // Nothing
-//                 break;
-//         }
-//     }
-// }
-// #endif
-
-//ACTION_TAP_DANCE_DOUBLE(kc1, kc2)
-

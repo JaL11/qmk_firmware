@@ -29,5 +29,15 @@
 #endif
 
 // If you are using an Elite C rev3 on the slave side, uncomment the lines below:
-// #define SPLIT_USB_DETECT
-// #define NO_USB_STARTUP_CHECK
+#define SPLIT_USB_DETECT
+#define NO_USB_STARTUP_CHECK
+
+// Encoder settings to unflip the direction of the ecoders and get the resolution right
+#define ENCODER_DIRECTION_FLIP
+#define ENCODER_RESOLUTION 2
+
+#define RETRO_TAPPING
+
+
+//  #define PERMISSIVE_HOLD
+#define TAPPING_TERM 200

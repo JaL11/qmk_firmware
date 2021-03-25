@@ -24,25 +24,9 @@ enum layers {
     _ADJUST
 };
 
-
-// Tap Dance declarations
-// enum {
-//     TD_ESC_CAPS,
-// };
-
-// // Tap Dance definitions
-// qk_tap_dance_action_t tap_dance_actions[] = {
-//     // Tap once for Escape, twice for Caps Lock
-//     [TD_ESC_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS),
-// };
-
-
 /*TODO:
 * add 'ae' 'oe' 'ue' to 'a' 'o' 'u'
-*   - turn on unicode and creat unicode map for german and other characters see: https://github.com/Dakes/kyria/blob/main/keymaps/dakes/keymap.c   and   https://docs.qmk.fm/#/feature_unicode
 * work on layer customisation
-
-* Look into Audio https://docs.qmk.fm/#/feature_audio
 */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -50,35 +34,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Base Layer: QWERTY
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |GRAVE_ESC|  Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  - _   |
+ * |RAIS/ESC|   Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |- _/LSft|
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |LSft(TAB)|  A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  ' "   |
+ * | LShift |   A  |   S  |  D   |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |Ctrl(TAB)|  Z  |   X  |   C  |   V  |   B  | Meta |LShift|  |LShift|LShift|   N  |   M  | ,  < | . >  | /  ? |LSft(|\)|
+ * |Ctrl/TAB|   Z  |   X  |   C  |   V  |   B  | Meta |LShift|  |LShift|LShift|   N  |   M  | ,  < | . >  | /  ? |  | \   |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        | GUI  | Del  | Enter| Space| Esc  |  | Enter| Space| Tab  | Bksp | AltGr|
  *                        |      |      | Alt  | Lower| Raise|  | Lower| Raise|      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
+
  /*
  * Troubleshooting: 
- * - Get German keys working Currently only printing us chars
+ * ESC ......... prints 's' instead of ESC/GRAVE
+ * MT(KC_LSFT, KC_MINUS) ........ minus works but shift is controll
  *
- */    [_QWERTY] = LAYOUT(
-
-      //TD(TD_ESC_CAPS)
-      KC_GESC,       KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                  KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_MINS,
-      SFT_T(KC_TAB),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,        KC_H,    KC_J,    KC_K,  KC_L,  KC_SCLN, KC_QUOT,
-/*Home row mod:*/
-// SFT_T(KC_TAB),  LGUI_T(KC_A),   ALT_T(KC_S), LCTL_T(KC_D), SFT_T(KC_F), LT(_LOWER, KC_G),   LT(_RAISE,KC_H), SFT_T(KC_J), LCTL_T(KC_K), ALT_T(KC_L), LGUI_T(KC_SCLN), KC_QUOT,
-      MT(MOD_LCTL, KC_TAB), KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,   KC_LSFT,     KC_LSFT, KC_LSFT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_LSFT, KC_PIPE),
-        KC_MEDIA_PLAY_PAUSE, KC_LGUI, MT(MOD_LALT, KC_ENT), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ESC),   LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_BSPC,  KC_DEL,  KC_RALT
+ */
+    [_QWERTY] = LAYOUT(
+      LT(_RAISE, KC_GESC),       KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    MT(KC_LSFT, KC_MINS),
+      KC_LSFT,    KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+      MT(MOD_LCTL, KC_TAB), KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,   KC_LSFT,     KC_LSFT, KC_LSFT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_PIPE,
+              KC_LGUI, KC_DEL, MT(MOD_LALT, KC_ENT), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ESC),   LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_TAB,  KC_BSPC, KC_RALT
     ),
-/* 
+/*
  * Lower Layer: Symbols
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |  !   |  @   |  {   |  }   |  |   |                              |   Ä  |   Ö  |   Ü  |   ß  |      |  =  +  |
+ * |        |  !   |  @   |  {   |  }   |  |   |                              |   Ä  |   Ö  |   Ü  |   ß  |      |  | \   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |  #   |  $   |  (   |  )   |  `   |                              |   +  |  -   |  /   |  *   |  %   |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
@@ -89,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_LOWER] = LAYOUT(
-      _______, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     DE_ADIA, DE_ODIA, DE_UDIA, DE_SS,   _______, KC_EQL,
+      _______, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     DE_ADIA, DE_ODIA, DE_UDIA, DE_SS, _______, KC_BSLS,
       _______, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,                                      KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_PERC, KC_QUOT,
       _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, _______, _______, _______, _______, KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
                                  _______, _______, _______, KC_SCLN, KC_EQL,  KC_EQL,  KC_SCLN, _______, _______, KC_SYSTEM_SLEEP
@@ -211,10 +194,10 @@ static void render_status(void) {
             oled_write_P(PSTR("Default\n"), false);
             break;
         case _LOWER:
-            oled_write_P(PSTR("Lower-Symbols\n"), false);
+            oled_write_P(PSTR("Lower - Symbols\n"), false);
             break;
         case _RAISE:
-            oled_write_P(PSTR("Raise-Numbers\n"), false);
+            oled_write_P(PSTR("Raise - Numbers\n"), false);
             break;
         case _ADJUST:
             oled_write_P(PSTR("Adjust\n"), false);
@@ -234,8 +217,8 @@ void oled_task_user(void) {
     if (is_keyboard_master()) {
         render_status(); // Renders the current keyboard state (layer, lock, caps, scroll, etc)
     } else {
-        render_kyria_logo();
-        }
+        render_status();
+    }
 }
 #endif
 
@@ -316,6 +299,3 @@ void encoder_update_user(uint8_t index, bool clockwise) {
 //     }
 // }
 // #endif
-
-//ACTION_TAP_DANCE_DOUBLE(kc1, kc2)
-

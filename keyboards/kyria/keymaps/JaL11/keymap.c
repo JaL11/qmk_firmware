@@ -14,7 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
-//#include keymap_german.h
+#include "keymap_german.h"
+#include "sendstring_german.h"
 
 enum layers {
     _QWERTY = 0,
@@ -26,8 +27,6 @@ enum layers {
 /*TODO:
 * add 'ae' 'oe' 'ue' to 'a' 'o' 'u'
 * work on layer customisation
-* change qmk to git fork
-*
 */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -39,16 +38,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |Ctrl/TAB |   A  |   S  |  D   |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  | Meta |LShift|  |LShift|LShift|   N  |   M  | ,  < | . >  | /  ? |  - _   |
+ * | LShift |   Z  |   X  |   C  |   V  |   B  | Meta |LShift|  |LShift|LShift|   N  |   M  | ,  < | . >  | /  ? |- _/LSft|
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        | GUI  | Del  | Enter| Space| Esc  |  | Enter| Space| Tab  | Bksp | AltGr|
  *                        |      |      | Alt  | Lower| Raise|  | Lower| Raise|      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
+
+ /*
+ * Troubleshooting: 
+ * ESC ......... prints 's' instead of ESC/GRAVE
+ * MT(KC_LSFT, KC_MINUS) ........ minus works but shift is controll
+ *
+ */
     [_QWERTY] = LAYOUT(
-      LT(_RAISE, KC_ESC),       KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_PIPE,
-      MT(MOD_LCTL, KC_TAB),   KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-      KC_LSFT,                 KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,   KC_LSFT,     KC_LSFT, KC_LSFT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
+      LT(_RAISE, KC_GESC),       KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_PIPE,
+      MT(MOD_LCTL, KC_TAB),    KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+      KC_LSFT,                 KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,   KC_LSFT,     KC_LSFT, KC_LSFT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(KC_LSFT, KC_MINS),
               KC_LGUI, KC_DEL, MT(MOD_LALT, KC_ENT), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ESC),   LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_TAB,  KC_BSPC, KC_RALT
     ),
 /*
@@ -236,3 +242,60 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     }
 }
 #endif
+
+
+// #ifdef ENCODER_ENABLE
+// void encoder_update_user(uint8_t index, bool clockwise) {
+//     if (index == 0) {
+//         switch (get_highest_layer(layer_state)) {
+//             case QWERTY:
+//                 if (clockwise) { // Ctrl + I
+//                     tap_code16(C(KC_I));
+//                 } else { // Shift + F3
+//                     tap_code16(S(KC_F3));
+//                 }
+//                 break;
+//             case LOWER:
+//                 // History scrubbing. For Adobe products, hold shift while moving
+//                 // backward to go forward instead.
+//                 if (clockwise) {
+//                     tap_code16(C(KC_Y));
+//                 } else {
+//                     tap_code16(C(KC_Z));
+//                 }
+//                 break;
+//             case RAISE:
+//                  if (clockwise) { // Subscript: CTRL + =
+//                     tap_code16(C(KC_EQL));
+//                 }
+//                 break;
+//             default:
+//                 // Nothing
+//                 break;
+//         }
+//     } else if (index == 1) {
+//         switch (get_highest_layer(layer_state)) {
+//             case QWERTY:
+//                 // Scroll by letter horizontally
+//                 if (clockwise) {
+//                     tap_code16(KC_RGHT);
+//                 } else {
+//                     tap_code16(KC_LEFT);
+//                 }
+//             case LOWER:
+//                 // Nothing
+//                 break;
+//             case RAISE:
+//                 // Find previous/Find next
+//                 if (clockwise) {
+//                     tap_code(KC_F3);
+//                 } else {
+//                     tap_code16(S(KC_F3));
+//                 }
+//             default:
+//                 // Nothing
+//                 break;
+//         }
+//     }
+// }
+// #endif
