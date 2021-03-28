@@ -21,9 +21,48 @@ enum layers {
     _QWERTY = 0,
     _LOWER,
     _RAISE,
-    _ADJUST
+    _ADJUST,
+    _GAMING
 };
 
+/* Unicode:
+    German Characters:
+    * -  Ä - 0x00C4
+    * -  Ö - 0x00D6
+    * -  Ü - 0x00DC
+    * -  ß - 0x00DF
+
+    * -  ä - 0x00E4
+    * -  ö - 0x00F6
+    * -  ü - 0x00FC
+* 
+*/
+
+enum unicode_names {
+    BANG,
+    IRONY,
+    SNEK,
+    GER_AE,
+    GER_OE,
+    GER_UE,
+    GER_SS,
+    GER_AE_small,
+    GER_OE_small,
+    GER_UE_small
+};
+
+const uint32_t PROGMEM unicode_map[] = {
+    [BANG]  = 0x203D,  // ‽
+    [IRONY] = 0x2E2E,  // ⸮
+    [SNEK]  = 0x1F40D, // 🐍
+    [GER_AE] = 0x00C4, // Ä
+    [GER_OE] = 0x00D6, // Ö
+    [GER_UE] = 0x00DC, // Ü
+    [GER_SS] = 0x00DF, // ß
+    [GER_AE_small] = 0x00C4, // Ä
+    [GER_OE_small] = 0x00D6, // Ö
+    [GER_UE_small] = 0x00DC, // Ü
+};
 
 // Tap Dance declarations
 // enum {
@@ -40,8 +79,8 @@ enum layers {
 /*TODO:
 * add 'ae' 'oe' 'ue' to 'a' 'o' 'u'
 *   - turn on unicode and creat unicode map for german and other characters see: https://github.com/Dakes/kyria/blob/main/keymaps/dakes/keymap.c   and   https://docs.qmk.fm/#/feature_unicode
-* work on layer customisation
-
+* - work on layer customisation
+* - double tap esc-tab?
 * Look into Audio https://docs.qmk.fm/#/feature_audio
 */
 
@@ -52,33 +91,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |GRAVE_ESC|  Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  - _   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |LSft(TAB)|  A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  ' "   |
+ * |LSft(TAB)|  A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |LSft ' "|
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |Ctrl(TAB)|  Z  |   X  |   C  |   V  |   B  | Meta |LShift|  |LShift|LShift|   N  |   M  | ,  < | . >  | /  ? |LSft(|\)|
+ * |Ctrl(TAB)|  Z  |   X  |   C  |   V  |   B  |  Meh |LShift|  |LShift| Hyper|   N  |   M  | ,  < | . >  | /  ? |LCRTL |\|
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        | GUI  | Del  | Enter| Space| Esc  |  | Enter| Space| Tab  | Bksp | AltGr|
+ *                        | Mute | GUI  | Bksp | Space| Enter|  | Enter| Space| Bksp | Del  | AltGr|
  *                        |      |      | Alt  | Lower| Raise|  | Lower| Raise|      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
  /*
- * Troubleshooting: 
+ * Troubleshooting:
  * - Get German keys working Currently only printing us chars
  *
  */    [_QWERTY] = LAYOUT(
 
       //TD(TD_ESC_CAPS)
-      KC_GESC,       KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                  KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_MINS,
-      SFT_T(KC_TAB),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,        KC_H,    KC_J,    KC_K,  KC_L,  KC_SCLN, KC_QUOT,
-/*Home row mod:*/
-// SFT_T(KC_TAB),  LGUI_T(KC_A),   ALT_T(KC_S), LCTL_T(KC_D), SFT_T(KC_F), LT(_LOWER, KC_G),   LT(_RAISE,KC_H), SFT_T(KC_J), LCTL_T(KC_K), ALT_T(KC_L), LGUI_T(KC_SCLN), KC_QUOT,
-      MT(MOD_LCTL, KC_TAB), KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,   KC_LSFT,     KC_LSFT, KC_LSFT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_LSFT, KC_PIPE),
-        KC_MEDIA_PLAY_PAUSE, KC_LGUI, MT(MOD_LALT, KC_ENT), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ESC),   LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_BSPC,  KC_DEL,  KC_RALT
+      KC_GESC,  KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_MINS,
+      SFT_T(KC_TAB),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                                  KC_H,    KC_J,    KC_K,  KC_L,  KC_SCLN, MT(MOD_LSFT, KC_QUOT),
+        MT(MOD_LCTL, KC_TAB), KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_MEH,   KC_LSFT,        KC_LSFT, KC_HYPR, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_LCTL, KC_PIPE), 
+        KC_MUTE, KC_LGUI, MT(MOD_LALT, KC_BSPC), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ENT),        LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_BSPC,  KC_DEL,  KC_RALT
     ),
 /* 
  * Lower Layer: Symbols
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |  !   |  @   |  {   |  }   |  |   |                              |   Ä  |   Ö  |   Ü  |   ß  |      |  =  +  |
+ * |  CAPS  |  !   |  @   |  {   |  }   |  |   |                              |   Ä  |   Ö  |   Ü  |   ß  |      |  =  +  |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |  #   |  $   |  (   |  )   |  `   |                              |   +  |  -   |  /   |  *   |  %   |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
@@ -89,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_LOWER] = LAYOUT(
-      _______, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     DE_ADIA, DE_ODIA, DE_UDIA, DE_SS,   _______, KC_EQL,
+      KC_CAPS, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     XP(GER_AE_small, GER_AE), XP(GER_OE_small, GER_OE), XP(GER_UE_small, GER_UE), X(GER_SS),   _______, KC_EQL,
       _______, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,                                      KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_PERC, KC_QUOT,
       _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, _______, _______, _______, _______, KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
                                  _______, _______, _______, KC_SCLN, KC_EQL,  KC_EQL,  KC_SCLN, _______, _______, KC_SYSTEM_SLEEP
@@ -100,40 +137,62 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |        |   1  |  2   |  3   |  4   |  5   |                              |  6   |  7   |  8   |  9   |  0   |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      | Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
+ * |        | KC_F5| Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      | Mute | VolDn|      |      |  |      |      | MLeft| Mdown| MUp  |MRight|      |        |
+ * |        |      |      |      | Mute | VolDn| PSCRN|      |  |TG(_GAMING)| | MLeft| Mdown| MUp  |MRight|      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_RAISE] = LAYOUT(
-      _______, KC_1, 	  KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
-      _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-      _______, _______, _______, _______, KC_MUTE, KC_VOLD, _______, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
+      _______, KC_1, 	  KC_2,    KC_3,    KC_4,    KC_5,                                       KC_6,    KC_7,  KC_8,     KC_9,     KC_0,   _______,
+      _______, KC_F5, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______,   _______,
+      _______, _______, _______, _______, KC_MUTE, KC_VOLD, KC_PSCREEN, _______, TG(_GAMING), _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
  * Adjust Layer: Function keys, RGB
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        | F1   |  F2  | F3   | F4   | F5   |                              | F6   | F7   |  F8  | F9   | F10  |        |
+ * |   F1   |  F2  | F3   | F4   | F5   | F6   |                              | F7   |  F8  | F9   | F10  | F11  | F12    |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        | TOG  | SAI  | HUI  | VAI  | MOD  |                              |      |      |      | F11  | F12  |        |
+ * |        |      |      |      |      |      |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      | SAD  | HUD  | VAD  | RMOD |      |      |  |      |      |      |      |      |      |      |        |
+ * |        |      |      |      |      |      |      |      |  |      |      |      |      |      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_ADJUST] = LAYOUT(
-      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                       KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
-      _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,                                     _______, _______, _______, KC_F11,  KC_F12,  _______,
-      _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,  KC_F6,                                        KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11, KC_F12,
+      _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
+/*
+ * Gaming Layer    
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |        |      |   Q  |  W   |  E   |  R   |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |        |LSHIFT|   A  |  S   |  D   |  F   |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |        | CRTL |   Z  |  X   |  C   |  V   |      |      |  |TG(GAM)|     |      |      |      |      |      |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_GAMING] = LAYOUT(
+      _______, _______, _______, _______, _______, _______,                                         _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______,                                         _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, TG(_GAMING), _______, _______, _______, _______, _______, _______, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+    ),
+
+
 // /*
 //  * Layer template
 //  *
@@ -160,6 +219,20 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
+
+//Retro Tapping Per Key:
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case MT(MOD_LALT, KC_BSPC):
+            return false;
+        default:
+            return false;
+    }       
+}
+
+
+/*Home row mod:*/   
+// SFT_T(KC_TAB),  LGUI_T(KC_A),   ALT_T(KC_S), LCTL_T(KC_D), SFT_T(KC_F), LT(_LOWER, KC_G),   LT(_RAISE,KC_H), SFT_T(KC_J), LCTL_T(KC_K), ALT_T(KC_L), LGUI_T(KC_SCLN), KC_QUOT,
 
 /* The encoder_update_user is a function.
  * It'll be called by QMK every time you turn the encoder.
@@ -218,6 +291,9 @@ static void render_status(void) {
             break;
         case _ADJUST:
             oled_write_P(PSTR("Adjust\n"), false);
+            break;
+        case _GAMING:
+            oled_write_P(PSTR("GAMMING!\n"), false);
             break;
         default:
             oled_write_P(PSTR("Undefined\n"), false);
