@@ -1,18 +1,4 @@
-/* Copyright 2019 Thomas Baart <thomas@splitkb.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 #include QMK_KEYBOARD_H
 #include "keymap_german.h"
 #include "sendstring_german.h"
@@ -21,12 +7,85 @@ enum layers {
     _QWERTY = 0,
     _LOWER,
     _RAISE,
-    _ADJUST
+    _ADJUST,
+    _GAMING
+};
+
+/* Unicode:
+    German Characters:
+    * -  Ä - 0x00C4
+    * -  Ö - 0x00D6
+    * -  Ü - 0x00DC
+    * -  ß - 0x00DF
+
+    * -  ä - 0x00E4
+    * -  ö - 0x00F6
+    * -  ü - 0x00FC
+* 
+*/
+#ifdef UNICODE_ENABLE
+enum unicode_names {
+    BANG,
+    IRONY,
+    SNEK,
+    GER_AE,
+    GER_OE,
+    GER_UE,
+    GER_SS,
+    GER_AE_small,
+    GER_OE_small,
+    GER_UE_small
+};
+
+const uint32_t PROGMEM unicode_map[] = {
+    [BANG]  = 0x203D,  // ‽
+    [IRONY] = 0x2E2E,  // ⸮
+    [SNEK]  = 0x1F40D, // 🐍
+    [GER_AE] = 0x00C4, // Ä
+    [GER_OE] = 0x00D6, // Ö
+    [GER_UE] = 0x00DC, // Ü
+    [GER_SS] = 0x00DF, // ß
+    [GER_AE_small] = 0x00C4, // ä
+    [GER_OE_small] = 0x00D6, // ö
+    [GER_UE_small] = 0x00DC, // ü
+};
+#endif
+
+//Macros!:
+enum custom_keycodes {
+    CRTL_F9 = SAFE_RANGE,
+    CRTL_F10,
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case CRTL_F9:
+        if (record->event.pressed) {
+            // when keycode CRTL_F9 is pressed
+            // SS_TAP is needed in order to use X_ keys!!!
+            SEND_STRING(SS_LCTL(SS_TAP(X_F9)));
+        } else {
+            // when keycode CRTL_F9 is released
+        }
+        break;
+
+    case CRTL_F10:
+        if (record->event.pressed) {
+            SEND_STRING(SS_LCTL(SS_TAP(X_F10)));
+        } else {
+
+        }
+        break;
+    }
+    return true;
 };
 
 /*TODO:
 * add 'ae' 'oe' 'ue' to 'a' 'o' 'u'
-* work on layer customisation
+*   - turn on unicode and creat unicode map for german and other characters see: https://github.com/Dakes/kyria/blob/main/keymaps/dakes/keymap.c   and   https://docs.qmk.fm/#/feature_unicode
+* - work on layer customisation
+* - double tap esc-tab?
+* Look into Audio https://docs.qmk.fm/#/feature_audio
 */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -34,34 +93,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Base Layer: QWERTY
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |RAIS/ESC|   Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  | \   |
+ * |GRAVE_ESC|  Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  - _   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |Ctrl/TAB |   A  |   S  |  D   |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  ' "   |
+ * |LSft(TAB)|  A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |LSft ' "|
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  | Meta |LShift|  |LShift|LShift|   N  |   M  | ,  < | . >  | /  ? |- _/LSft|
+ * |Ctrl(TAB)|  Z  |   X  |   C  |   V  |   B  |  Meh |LShift|  |LShift| Hyper|   N  |   M  | ,  < | . >  | /  ? |LCRTL |\|
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        | GUI  | Del  | Enter| Space| Esc  |  | Enter| Space| Tab  | Bksp | AltGr|
+ *                        | Mute | GUI  | Bksp | Space| Enter|  | Enter| Space| Bksp | Del  | AltGr|
  *                        |      |      | Alt  | Lower| Raise|  | Lower| Raise|      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-
  /*
- * Troubleshooting: 
- * ESC ......... prints 's' instead of ESC/GRAVE
- * MT(KC_LSFT, KC_MINUS) ........ minus works but shift is controll
+ * Troubleshooting:
+ * - Get German keys working Currently only printing us chars
  *
- */
-    [_QWERTY] = LAYOUT(
-      LT(_RAISE, KC_GESC),       KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_PIPE,
-      MT(MOD_LCTL, KC_TAB),    KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-      KC_LSFT,                 KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,   KC_LSFT,     KC_LSFT, KC_LSFT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(KC_LSFT, KC_MINS),
-              KC_LGUI, KC_DEL, MT(MOD_LALT, KC_ENT), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ESC),   LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_TAB,  KC_BSPC, KC_RALT
+ */    [_QWERTY] = LAYOUT(
+
+      //TD(TD_ESC_CAPS)
+      KC_GESC,  KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_MINS,
+      SFT_T(KC_TAB),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                                  KC_H,    KC_J,    KC_K,  KC_L,  KC_SCLN, MT(MOD_RSFT, KC_QUOT),
+        MT(MOD_LCTL, KC_TAB), KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_MEH,   KC_LSFT,        KC_LSFT, KC_HYPR, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_RCTL, KC_PIPE), 
+        KC_MUTE, KC_LGUI, MT(MOD_LALT, KC_BSPC), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ENT),        LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_BSPC,  KC_DEL,  KC_RALT
     ),
-/*
+/* 
  * Lower Layer: Symbols
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |  !   |  @   |  {   |  }   |  |   |                              |      |      |      |      |      |  | \   |
+ * |  CAPS  |  !   |  @   |  {   |  }   |  |   |                              |   Ä  |   Ö  |   Ü  |   ß  |      |  =  +  |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |  #   |  $   |  (   |  )   |  `   |                              |   +  |  -   |  /   |  *   |  %   |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
@@ -72,7 +130,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_LOWER] = LAYOUT(
-      _______, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     _______, _______, _______, _______, _______, KC_BSLS,
+      //KC_CAPS, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     XP(GER_AE_small, GER_AE), XP(GER_OE_small, GER_OE), XP(GER_UE_small, GER_UE), X(GER_SS),   _______, KC_EQL,
+      KC_CAPS, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     _______, _______, _______, _______, _______, KC_EQL,
       _______, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,                                      KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_PERC, KC_QUOT,
       _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, _______, _______, _______, _______, KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
                                  _______, _______, _______, KC_SCLN, KC_EQL,  KC_EQL,  KC_SCLN, _______, _______, KC_SYSTEM_SLEEP
@@ -81,42 +140,64 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Raise Layer: Number keys, media, navigation
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |   1  |  2   |  3   |  4   |  5   |                              |  6   |  7   |  8   |  9   |  0   |        |
+ * | GAMING |   1  |  2   |  3   |  4   |  5   |                              |  6   |  7   |  8   |  9   |  0   |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      | Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
+ * |        | KC_F5| Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      | Mute | VolDn|      |      |  |      |      | MLeft| Mdown| MUp  |MRight|      |        |
+ * | CRTL_F9|      |      |      | Mute | VolDn| PSCRN|      |  |GAMING|      | Home | End  | PGUP | PGDW |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_RAISE] = LAYOUT(
-      _______, KC_1, 	  KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
-      _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-      _______, _______, _______, _______, KC_MUTE, KC_VOLD, _______, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
+      TG(_GAMING), KC_1, 	  KC_2,    KC_3,    KC_4,    KC_5,                                       KC_6,    KC_7,  KC_8,     KC_9,     KC_0,   _______,
+      CRTL_F10, KC_F5, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,  KC_RGHT, _______,   _______,
+      CRTL_F9, CRTL_F10, _______, _______, KC_MUTE, KC_VOLD, KC_PSCREEN, _______, TG(_GAMING), _______, KC_HOME, KC_END, KC_PGUP, KC_PGDN, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
  * Adjust Layer: Function keys, RGB
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        | F1   |  F2  | F3   | F4   | F5   |                              | F6   | F7   |  F8  | F9   | F10  |        |
+ * |   F1   |  F2  | F3   | F4   | F5   | F6   |                              | F7   |  F8  | F9   | F10  | F11  | F12    |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        | TOG  | SAI  | HUI  | VAI  | MOD  |                              |      |      |      | F11  | F12  |        |
+ * |        |      |      |      |      |      |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      | SAD  | HUD  | VAD  | RMOD |      |      |  |      |      |      |      |      |      |      |        |
+ * |        |      |      |      |      |      |      |      |  |      |      |      |      |      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_ADJUST] = LAYOUT(
-      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                       KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
-      _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,                                     _______, _______, _______, KC_F11,  KC_F12,  _______,
-      _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,  KC_F6,                                        KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11, KC_F12,
+      _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
+/*
+ * Gaming Layer    
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |        |  TAB |   Q  |  W   |  E   |  R   |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |        |LSHIFT|   A  |  S   |  D   |  F   |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |        | CRTL |   Z  |  X   |  C   |  V   |DEFAULT|     |  |TG(GAM)|     |      |      |      |      |      |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |      |      |      | SPACE|  ESC |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_GAMING] = LAYOUT(
+      _______, KC_TAB, KC_Q,   KC_W,   KC_E,   KC_R,                                                     _______, _______, _______, _______, _______, _______,
+      _______, KC_LSFT, KC_A,   KC_S,   KC_D,   KC_F,                                                    _______, _______, _______, _______, _______, _______,
+      _______, KC_LCTRL, KC_Z,   KC_X,   KC_C,   KC_V, TG(_GAMING), _______,            TG(_GAMING), _______, _______, _______, _______, _______, _______, _______,
+                                 _______, _______, _______, KC_SPACE, KC_ESC,        _______, _______, _______, _______, _______
+    ),
+
+
 // /*
 //  * Layer template
 //  *
@@ -143,6 +224,81 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
+// Tap Dance declarations
+#ifdef TAP_DANCE_ENABLE
+enum {
+    TD_ESC_CAPS,
+    TD_JJ_ESC,
+};
+
+// Tap Dance definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+    // Tap once for Escape, twice for Caps Lock#
+    [TD_ESC_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_GESC, KC_CAPS),
+    [TD_JJ_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_J, KC_ESC),
+    
+};
+#endif
+
+#ifdef COMBO_ENABLE
+// //combos:
+
+// enum combos {
+//   AB_ESC,
+//   JK_TAB
+// };
+
+// const uint16_t PROGMEM ab_combo[] = {KC_A, KC_B, COMBO_END};
+// const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
+
+// combo_t key_combos[COMBO_COUNT] = {
+//   [AB_ESC] = COMBO(ab_combo, KC_ESC),
+//   [JK_TAB] = COMBO(jk_combo, KC_TAB)
+// };
+#endif
+
+#ifdef LEADER_ENABLE
+//Leader Key:
+LEADER_EXTERNS();
+
+void matrix_scan_user(void) {
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
+
+    SEQ_ONE_KEY(KC_F) {
+      // Anything you can do in a macro.
+      SEND_STRING("QMK is awesome.");
+    }
+    SEQ_TWO_KEYS(KC_D, KC_D) {
+      SEND_STRING(SS_LCTL("a") SS_LCTL("c"));
+    }
+    SEQ_THREE_KEYS(KC_D, KC_D, KC_S) {
+      SEND_STRING("https://start.duckduckgo.com\n");
+    }
+    SEQ_TWO_KEYS(KC_A, KC_S) {
+      register_code(KC_LGUI);
+      register_code(KC_S);
+      unregister_code(KC_S);
+      unregister_code(KC_LGUI);
+    }
+  }
+}
+#endif
+
+//Retro Tapping Per Key:
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case MT(MOD_LALT, KC_BSPC):
+            return false;
+        default:
+            return false;
+    }       
+}
+
+
+/*Home row mod:*/   
+// SFT_T(KC_TAB),  LGUI_T(KC_A),   ALT_T(KC_S), LCTL_T(KC_D), SFT_T(KC_F), LT(_LOWER, KC_G),   LT(_RAISE,KC_H), SFT_T(KC_J), LCTL_T(KC_K), ALT_T(KC_L), LGUI_T(KC_SCLN), KC_QUOT,
 
 /* The encoder_update_user is a function.
  * It'll be called by QMK every time you turn the encoder.
@@ -194,13 +350,16 @@ static void render_status(void) {
             oled_write_P(PSTR("Default\n"), false);
             break;
         case _LOWER:
-            oled_write_P(PSTR("Lower\n"), false);
+            oled_write_P(PSTR("Lower-Symbols\n"), false);
             break;
         case _RAISE:
-            oled_write_P(PSTR("Raise\n"), false);
+            oled_write_P(PSTR("Raise-Numbers\n"), false);
             break;
         case _ADJUST:
             oled_write_P(PSTR("Adjust\n"), false);
+            break;
+        case _GAMING:
+            oled_write_P(PSTR("GAMING!\n"), false);
             break;
         default:
             oled_write_P(PSTR("Undefined\n"), false);
@@ -218,7 +377,7 @@ void oled_task_user(void) {
         render_status(); // Renders the current keyboard state (layer, lock, caps, scroll, etc)
     } else {
         render_kyria_logo();
-    }
+        }
 }
 #endif
 
@@ -299,3 +458,6 @@ void encoder_update_user(uint8_t index, bool clockwise) {
 //     }
 // }
 // #endif
+
+//ACTION_TAP_DANCE_DOUBLE(kc1, kc2)
+

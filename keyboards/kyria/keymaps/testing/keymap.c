@@ -1,18 +1,4 @@
-/* Copyright 2019 Thomas Baart <thomas@splitkb.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 #include QMK_KEYBOARD_H
 #include "keymap_german.h"
 #include "sendstring_german.h"
@@ -37,7 +23,7 @@ enum layers {
     * -  ü - 0x00FC
 * 
 */
-
+#ifdef UNICODE_ENABLE
 enum unicode_names {
     BANG,
     IRONY,
@@ -59,22 +45,40 @@ const uint32_t PROGMEM unicode_map[] = {
     [GER_OE] = 0x00D6, // Ö
     [GER_UE] = 0x00DC, // Ü
     [GER_SS] = 0x00DF, // ß
-    [GER_AE_small] = 0x00C4, // Ä
-    [GER_OE_small] = 0x00D6, // Ö
-    [GER_UE_small] = 0x00DC, // Ü
+    [GER_AE_small] = 0x00C4, // ä
+    [GER_OE_small] = 0x00D6, // ö
+    [GER_UE_small] = 0x00DC, // ü
+};
+#endif
+
+//Macros!:
+enum custom_keycodes {
+    CRTL_F9 = SAFE_RANGE,
+    CRTL_F10,
 };
 
-// Tap Dance declarations
-// enum {
-//     TD_ESC_CAPS,
-// };
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case CRTL_F9:
+        if (record->event.pressed) {
+            // when keycode CRTL_F9 is pressed
+            // SS_TAP is needed in order to use X_ keys!!!
+            SEND_STRING(SS_LCTL(SS_TAP(X_F9)));
+        } else {
+            // when keycode CRTL_F9 is released
+        }
+        break;
 
-// // Tap Dance definitions
-// qk_tap_dance_action_t tap_dance_actions[] = {
-//     // Tap once for Escape, twice for Caps Lock
-//     [TD_ESC_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS),
-// };
+    case CRTL_F10:
+        if (record->event.pressed) {
+            SEND_STRING(SS_LCTL(SS_TAP(X_F10)));
+        } else {
 
+        }
+        break;
+    }
+    return true;
+};
 
 /*TODO:
 * add 'ae' 'oe' 'ue' to 'a' 'o' 'u'
@@ -107,8 +111,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
       //TD(TD_ESC_CAPS)
       KC_GESC,  KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_MINS,
-      SFT_T(KC_TAB),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                                  KC_H,    KC_J,    KC_K,  KC_L,  KC_SCLN, MT(MOD_LSFT, KC_QUOT),
-        MT(MOD_LCTL, KC_TAB), KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_MEH,   KC_LSFT,        KC_LSFT, KC_HYPR, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_LCTL, KC_PIPE), 
+      SFT_T(KC_TAB),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                                  KC_H,    KC_J,    KC_K,  KC_L,  KC_SCLN, MT(MOD_RSFT, KC_QUOT),
+        MT(MOD_LCTL, KC_TAB), KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_MEH,   KC_LSFT,        KC_LSFT, KC_HYPR, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_RCTL, KC_PIPE), 
         KC_MUTE, KC_LGUI, MT(MOD_LALT, KC_BSPC), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ENT),        LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_BSPC,  KC_DEL,  KC_RALT
     ),
 /* 
@@ -126,7 +130,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_LOWER] = LAYOUT(
-      KC_CAPS, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     XP(GER_AE_small, GER_AE), XP(GER_OE_small, GER_OE), XP(GER_UE_small, GER_UE), X(GER_SS),   _______, KC_EQL,
+      //KC_CAPS, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     XP(GER_AE_small, GER_AE), XP(GER_OE_small, GER_OE), XP(GER_UE_small, GER_UE), X(GER_SS),   _______, KC_EQL,
+      KC_CAPS, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     _______, _______, _______, _______, _______, KC_EQL,
       _______, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,                                      KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_PERC, KC_QUOT,
       _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, _______, _______, _______, _______, KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
                                  _______, _______, _______, KC_SCLN, KC_EQL,  KC_EQL,  KC_SCLN, _______, _______, KC_SYSTEM_SLEEP
@@ -135,20 +140,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Raise Layer: Number keys, media, navigation
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |   1  |  2   |  3   |  4   |  5   |                              |  6   |  7   |  8   |  9   |  0   |        |
+ * | GAMING |   1  |  2   |  3   |  4   |  5   |                              |  6   |  7   |  8   |  9   |  0   |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        | KC_F5| Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      | Mute | VolDn| PSCRN|      |  |TG(_GAMING)| | MLeft| Mdown| MUp  |MRight|      |        |
+ * | CRTL_F9|      |      |      | Mute | VolDn| PSCRN|      |  |GAMING|      | Home | End  | PGUP | PGDW |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_RAISE] = LAYOUT(
-      _______, KC_1, 	  KC_2,    KC_3,    KC_4,    KC_5,                                       KC_6,    KC_7,  KC_8,     KC_9,     KC_0,   _______,
-      _______, KC_F5, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______,   _______,
-      _______, _______, _______, _______, KC_MUTE, KC_VOLD, KC_PSCREEN, _______, TG(_GAMING), _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
+      TG(_GAMING), KC_1, 	  KC_2,    KC_3,    KC_4,    KC_5,                                       KC_6,    KC_7,  KC_8,     KC_9,     KC_0,   _______,
+      CRTL_F10, KC_F5, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,  KC_RGHT, _______,   _______,
+      CRTL_F9, CRTL_F10, _______, _______, KC_MUTE, KC_VOLD, KC_PSCREEN, _______, TG(_GAMING), _______, KC_HOME, KC_END, KC_PGUP, KC_PGDN, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
@@ -175,21 +180,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Gaming Layer    
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |   Q  |  W   |  E   |  R   |                              |      |      |      |      |      |        |
+ * |        |  TAB |   Q  |  W   |  E   |  R   |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |LSHIFT|   A  |  S   |  D   |  F   |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        | CRTL |   Z  |  X   |  C   |  V   |      |      |  |TG(GAM)|     |      |      |      |      |      |        |
+ * |        | CRTL |   Z  |  X   |  C   |  V   |DEFAULT|     |  |TG(GAM)|     |      |      |      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        |      |      |      | SPACE|  ESC |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_GAMING] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                                         _______, _______, _______, _______, _______, _______,
-      _______, _______, _______, _______, _______, _______,                                         _______, _______, _______, _______, _______, _______,
-      _______, _______, _______, _______, _______, _______, _______, _______, TG(_GAMING), _______, _______, _______, _______, _______, _______, _______,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+      _______, KC_TAB, KC_Q,   KC_W,   KC_E,   KC_R,                                                     _______, _______, _______, _______, _______, _______,
+      _______, KC_LSFT, KC_A,   KC_S,   KC_D,   KC_F,                                                    _______, _______, _______, _______, _______, _______,
+      _______, KC_LCTRL, KC_Z,   KC_X,   KC_C,   KC_V, TG(_GAMING), _______,            TG(_GAMING), _______, _______, _______, _______, _______, _______, _______,
+                                 _______, _______, _______, KC_SPACE, KC_ESC,        _______, _______, _______, _______, _______
     ),
 
 
@@ -219,6 +224,67 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
+// Tap Dance declarations
+#ifdef TAP_DANCE_ENABLE
+enum {
+    TD_ESC_CAPS,
+    TD_JJ_ESC,
+};
+
+// Tap Dance definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+    // Tap once for Escape, twice for Caps Lock#
+    [TD_ESC_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_GESC, KC_CAPS),
+    [TD_JJ_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_J, KC_ESC),
+    
+};
+#endif
+
+#ifdef COMBO_ENABLE
+// //combos:
+
+// enum combos {
+//   AB_ESC,
+//   JK_TAB
+// };
+
+// const uint16_t PROGMEM ab_combo[] = {KC_A, KC_B, COMBO_END};
+// const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
+
+// combo_t key_combos[COMBO_COUNT] = {
+//   [AB_ESC] = COMBO(ab_combo, KC_ESC),
+//   [JK_TAB] = COMBO(jk_combo, KC_TAB)
+// };
+#endif
+
+#ifdef LEADER_ENABLE
+//Leader Key:
+LEADER_EXTERNS();
+
+void matrix_scan_user(void) {
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
+
+    SEQ_ONE_KEY(KC_F) {
+      // Anything you can do in a macro.
+      SEND_STRING("QMK is awesome.");
+    }
+    SEQ_TWO_KEYS(KC_D, KC_D) {
+      SEND_STRING(SS_LCTL("a") SS_LCTL("c"));
+    }
+    SEQ_THREE_KEYS(KC_D, KC_D, KC_S) {
+      SEND_STRING("https://start.duckduckgo.com\n");
+    }
+    SEQ_TWO_KEYS(KC_A, KC_S) {
+      register_code(KC_LGUI);
+      register_code(KC_S);
+      unregister_code(KC_S);
+      unregister_code(KC_LGUI);
+    }
+  }
+}
+#endif
 
 //Retro Tapping Per Key:
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
@@ -293,7 +359,7 @@ static void render_status(void) {
             oled_write_P(PSTR("Adjust\n"), false);
             break;
         case _GAMING:
-            oled_write_P(PSTR("GAMMING!\n"), false);
+            oled_write_P(PSTR("GAMING!\n"), false);
             break;
         default:
             oled_write_P(PSTR("Undefined\n"), false);
