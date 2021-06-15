@@ -97,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |LSft(TAB)|  A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |LSft ' "|
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |Ctrl(TAB)|  Z  |   X  |   C  |   V  |   B  |  Meh |LShift|  |LShift| Hyper|   N  |   M  | ,  < | . >  | /  ? |LCRTL |\|
+ * |Ctrl(TAB)|  Z  |   X  |   C  |   V  |   B  |  Meh |LShift|  |LShift| Hyper|   N  |   M  | ,  < | . >  | /  ? |RCRTL |\|
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        | Mute | GUI  | Bksp | Space| Enter|  | Enter| Space| Bksp | Del  | AltGr|
  *                        |      |      | Alt  | Lower| Raise|  | Lower| Raise|      |      |      |
@@ -113,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_GESC,  KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_MINS,
       SFT_T(KC_TAB),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                                  KC_H,    KC_J,    KC_K,  KC_L,  KC_SCLN, MT(MOD_RSFT, KC_QUOT),
         MT(MOD_LCTL, KC_TAB), KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_MEH,   KC_LSFT,        KC_LSFT, KC_HYPR, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_RCTL, KC_PIPE), 
-        KC_MUTE, KC_LGUI, MT(MOD_LALT, KC_BSPC), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ENT),        LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_BSPC,  KC_DEL,  KC_RALT
+        KC_MUTE, KC_LGUI, MT(MOD_LALT, KC_BSPC), LT(_LOWER, KC_SPC), LT(_RAISE, KC_ENT),        LT(_LOWER, KC_ENT), LT(_RAISE, KC_SPC), KC_BSPC,  KC_DEL,  KC_SYSTEM_WAKE
     ),
 /* 
  * Lower Layer: Symbols
@@ -134,7 +134,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_CAPS, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,                                     _______, _______, _______, _______, _______, KC_EQL,
       _______, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,                                      KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_PERC, KC_QUOT,
       _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, _______, _______, _______, _______, KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
-                                 _______, _______, _______, KC_SCLN, KC_EQL,  KC_EQL,  KC_SCLN, _______, _______, KC_SYSTEM_SLEEP
+                                 _______, _______, _______, KC_SCLN, KC_EQL,  KC_EQL,  KC_SCLN, _______, _______, KC_SYSTEM_POWER
     ),
 /*
  * Raise Layer: Number keys, media, navigation
@@ -142,9 +142,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * | GAMING |   1  |  2   |  3   |  4   |  5   |                              |  6   |  7   |  8   |  9   |  0   |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        | KC_F5| Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
+ * |        | KC_F5| Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right| PGUP |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | CRTL_F9|      |      |      | Mute | VolDn| PSCRN|      |  |GAMING|      | Home | End  | PGUP | PGDW |      |        |
+ * | CRTL_F9|      |      |      | Mute | VolDn| PSCRN|      |  |GAMING|      | Home | End  |      |      | PGDW |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -152,8 +152,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_RAISE] = LAYOUT(
       TG(_GAMING), KC_1, 	  KC_2,    KC_3,    KC_4,    KC_5,                                       KC_6,    KC_7,  KC_8,     KC_9,     KC_0,   _______,
-      CRTL_F10, KC_F5, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,  KC_RGHT, _______,   _______,
-      CRTL_F9, CRTL_F10, _______, _______, KC_MUTE, KC_VOLD, KC_PSCREEN, _______, TG(_GAMING), _______, KC_HOME, KC_END, KC_PGUP, KC_PGDN, _______, _______,
+      CRTL_F10, KC_F5, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,  KC_RGHT, KC_PGUP,   _______,
+      CRTL_F9, CRTL_F10, _______, _______, KC_MUTE, KC_VOLD, KC_PSCREEN, _______, TG(_GAMING), _______, KC_HOME, KC_END, _______, _______, KC_PGDN, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
@@ -304,7 +304,7 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
  * It'll be called by QMK every time you turn the encoder.
  *
  * The index parameter tells you which encoder was turned. If you only have
- * one encoder, the index will always be zero.
+ * one encoder, the index will always be zero. 
  * 
  * The clockwise parameter tells you the direction of the encoder. It'll be
  * true when you turned the encoder clockwise, and false otherwise.

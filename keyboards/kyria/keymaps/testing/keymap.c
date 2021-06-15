@@ -297,7 +297,9 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
 }
 
 
-/*Home row mod:*/   
+/*Home row mod:
+    Would need a lot more configuration in terms of timings, currently on default settings unusable
+*/   
 // SFT_T(KC_TAB),  LGUI_T(KC_A),   ALT_T(KC_S), LCTL_T(KC_D), SFT_T(KC_F), LT(_LOWER, KC_G),   LT(_RAISE,KC_H), SFT_T(KC_J), LCTL_T(KC_K), ALT_T(KC_L), LGUI_T(KC_SCLN), KC_QUOT,
 
 /* The encoder_update_user is a function.
