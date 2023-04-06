@@ -36,6 +36,3 @@
 /* Flash */
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET              // Activates the double-tap behavior
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 200U // Timeout window in ms in which the double tap can occur.
-
-#Convert from Elite-C to standard RP2040
-CONVERT_TO=promicro_rp2040

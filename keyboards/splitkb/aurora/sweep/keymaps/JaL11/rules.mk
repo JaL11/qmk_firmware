@@ -18,3 +18,5 @@ OLED_ENABLE = no
 RGBLIGHT_ENABLE = yes
 #Bootloader selection
 BOOTLOADER = rp2040
+# Convert from Elite-C to standard RP2040
+CONVERT_TO=promicro_rp2040
