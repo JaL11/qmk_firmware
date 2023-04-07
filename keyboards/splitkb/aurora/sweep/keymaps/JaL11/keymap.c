@@ -34,7 +34,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     MT(MOD_LCTL,KC_Z) ,     KC_X      ,     KC_C      ,     KC_V      ,     KC_B      ,             KC_N      ,      KC_M     ,      KC_COMM  ,      KC_DOT   , MT(MOD_LCTL,KC_SLSH),
     //|---------------+---------------+---------------+---------------+---------------|       |---------------+---------------+---------------+---------------+---------------|
     //                               |-------------------------+-------------------------| |-------------------------+-------------------------|
-                                                    MOD_LSFT   ,    LT(_SYMBOLS, KC_SPC),        LT(_NUMBERS, KC_ENT),  KC_ENT
+                                                    MOD_LSFT   ,    LT(_SYMBOLS, KC_ENT),        LT(_NUMBERS, KC_SPC),  KC_BSPC
     //                               |-------------------------+----/* Space ctl */------| |-------------------------+-------------------------|
     ),
 
@@ -46,23 +46,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ),
 
     [_SYMBOLS] = LAYOUT(
-      KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE, _______, _______, _______, _______, _______,
+      KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE, _______, _______, _______, KC_BACKSLASH, KC_UNDERSCORE,
       KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,  KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_PERC,
       KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_SLSH,
-                                 KC_SCLN, KC_EQL,  KC_EQL,  KC_SCLN
+                                 KC_SCLN, KC_EQL,  KC_TAB,  KC_DEL
     ),
 
     [_NUMBERS] = LAYOUT(
-      KC_1,    KC_2,    KC_3,    KC_4,    KC_5,         KC_6,    KC_7,    KC_8,    KC_9,
-      _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,      KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,
-      _______, _______, _______, KC_MUTE, KC_VOLD,      KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R,
+      KC_1,    KC_2,    KC_3,    KC_4,    KC_5,         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
+      KC_TAB,   KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,      KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______,
+      KC_LCTL, _______, _______, KC_MUTE, KC_VOLD,      KC_HOME, KC_END,  _______, _______, _______,
                                  _______, _______,      _______, _______
     ),
 
     [_ADJUST] = LAYOUT(
       KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
-      RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,          _______, _______, _______, KC_F11,  KC_F12,
-      _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,         _______, _______, _______, _______, _______,
+      BL_TOGG, BL_BRTG, _______, _______, _______,          _______, _______, _______, KC_F11,  KC_F12,
+      BL_STEP, _______, _______, _______, _______,         _______, _______, _______, _______, _______,
                                  _______, _______,          _______, _______
     ),
 };
@@ -72,29 +72,48 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 
 
-#ifdef ENCODER_ENABLE
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    // 0 and 1 are left-half encoders
-    // 2 and 3 are right-half encoders
-    if (index == 0) {
-        tap_code(KC_0);
-    } else if (index == 1) {
-        tap_code(KC_1);
-    } else if (index == 2) {
-        tap_code(KC_2);
-    } else if (index == 3) {
-        tap_code(KC_3);
-    }
+// void housekeeping_task_user(void) {
+//     switch (get_highest_layer(layer_state | default_layer_state)) {
+//         case 0:
+//             // Default layer
+//             rgblight_setrgb_at(RGB_BLACK, 0);
+//             break;
+//         case 1:
+//             rgblight_setrgb_at(RGB_RED, 0);
+//             break;
+//         case 2:
+//             rgblight_setrgb_at(RGB_GREEN, 0);
+//             break;
+//         case 3:
+//             rgblight_setrgb_at(RGB_BLUE, 0);
+//             break;
+//     }
+// }
 
-    if (clockwise) {
-        tap_code16(KC_PLUS);
-    } else {
-        tap_code(KC_MINUS);
-    }
+// void keyboard_post_init_user(void) {
+//     // Initialize RGB to static black
+//     rgblight_enable_noeeprom();
+//     rgblight_sethsv_noeeprom(HSV_BLACK);
+//     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+// }
 
-    return false;
-}
-#endif
+// void housekeeping_task_user(void) {
+//     switch (get_highest_layer(layer_state | default_layer_state)) {
+//         case 0:
+//             // Default layer
+//             rgblight_setrgb_at(RGB_BLACK, 0);
+//             break;
+//         case 1:
+//             rgblight_setrgb_at(RGB_RED, 0);
+//             break;
+//         case 2:
+//             rgblight_setrgb_at(RGB_GREEN, 0);
+//             break;
+//         case 3:
+//             rgblight_setrgb_at(RGB_BLUE, 0);
+//             break;
+//     }
+// }
 
 #ifdef OLED_ENABLE
 bool oled_task_user(void) {

@@ -25,12 +25,13 @@
 #    define ENABLE_RGB_MATRIX_RAINBOW_BEACON
 #endif
 
+
 // Not yet available in `keymap.json` format
 #ifdef MOUSEKEY_ENABLE
      // The default is 100
-#    define MOUSEKEY_WHEEL_INTERVAL 50
+#define MOUSEKEY_WHEEL_INTERVAL 50
      // The default is 40
-#    define MOUSEKEY_WHEEL_TIME_TO_MAX 100
+#define MOUSEKEY_WHEEL_TIME_TO_MAX 100
 #endif
 
 /* Flash */

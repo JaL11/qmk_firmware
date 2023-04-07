@@ -15,7 +15,10 @@
 
 ENCODER_ENABLE = no
 OLED_ENABLE = no
+
 RGBLIGHT_ENABLE = yes
+WS2812_DRIVER = vendor # Use the RP2040's PIO interface
+
 #Bootloader selection
 BOOTLOADER = rp2040
 # Convert from Elite-C to standard RP2040
