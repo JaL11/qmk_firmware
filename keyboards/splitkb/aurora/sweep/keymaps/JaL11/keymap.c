@@ -15,6 +15,9 @@
  */
 
 #include QMK_KEYBOARD_H
+// better combo support
+#include g/keymap_combo.h
+
 
 enum layers {
     _QWERTY = 0,
