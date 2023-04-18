@@ -24,6 +24,9 @@ BOOTLOADER = rp2040
 # Convert from Elite-C to standard RP2040
 CONVERT_TO=promicro_rp2040
 
+### NEEDED FOR COMBOS
+VPATH += keyboards/gboards
 COMBO_ENABLE = yes
 
-VPATH += keyboards/gboards
+### Caps word
+CAPS_WORD_ENABLE = yes

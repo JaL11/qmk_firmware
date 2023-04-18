@@ -16,7 +16,7 @@
 
 #include QMK_KEYBOARD_H
 // better combo support
-#include g/keymap_combo.h
+#include "g/keymap_combo.h"
 
 
 enum layers {
@@ -25,6 +25,7 @@ enum layers {
     _NUMBERS,
     _ADJUST
 };
+//must come after layer def!!!
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -37,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     MT(MOD_LCTL,KC_Z) ,     KC_X      ,     KC_C      ,     KC_V      ,     KC_B      ,             KC_N      ,      KC_M     ,      KC_COMM  ,      KC_DOT   , MT(MOD_LCTL,KC_SLSH),
     //|---------------+---------------+---------------+---------------+---------------|       |---------------+---------------+---------------+---------------+---------------|
     //                               |-------------------------+-------------------------| |-------------------------+-------------------------|
-                                                    MOD_LSFT   ,    LT(_SYMBOLS, KC_ENT),        LT(_NUMBERS, KC_SPC),  KC_BSPC
+                                                    CW_TOGG   ,    LT(_SYMBOLS, KC_ENT),        LT(_NUMBERS, KC_SPC),  KC_BSPC
     //                               |-------------------------+----/* Space ctl */------| |-------------------------+-------------------------|
     ),
 
