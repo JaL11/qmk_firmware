@@ -13,16 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#Bootloader selection
+BOOTLOADER = rp2040
+# Convert from Elite-C to standard RP2040
+CONVERT_TO=promicro_rp2040
+
 ENCODER_ENABLE = no
 OLED_ENABLE = no
 
 RGBLIGHT_ENABLE = yes
 WS2812_DRIVER = vendor # Use the RP2040's PIO interface
-
-#Bootloader selection
-BOOTLOADER = rp2040
-# Convert from Elite-C to standard RP2040
-CONVERT_TO=promicro_rp2040
 
 ### NEEDED FOR COMBOS
 VPATH += keyboards/gboards

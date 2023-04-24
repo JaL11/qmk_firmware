@@ -17,7 +17,7 @@
 #include QMK_KEYBOARD_H
 // better combo support
 #include "g/keymap_combo.h"
-
+// #include "layouts.h"
 
 enum layers {
     _QWERTY = 0,
@@ -75,6 +75,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
 }
 
+void keyboard_pre_init_user(void) {
+  // Set our LED pin as output
+  setPinOutput(24);
+  // Turn the LED off
+  // (Due to technical reasons, high is off and low is on)
+  writePinHigh(24);
+}
 
 // void housekeeping_task_user(void) {
 //     switch (get_highest_layer(layer_state | default_layer_state)) {

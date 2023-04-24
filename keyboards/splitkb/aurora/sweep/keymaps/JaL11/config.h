@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include "layouts.h"
+
 // Not yet available in `keymap.json` format
 #ifdef RGB_MATRIX_ENABLE
 #    define RGB_DISABLE_WHEN_USB_SUSPENDED
@@ -29,9 +31,9 @@
 // Not yet available in `keymap.json` format
 #ifdef MOUSEKEY_ENABLE
      // The default is 100
-#define MOUSEKEY_WHEEL_INTERVAL 50
+#   define MOUSEKEY_WHEEL_INTERVAL 50
      // The default is 40
-#define MOUSEKEY_WHEEL_TIME_TO_MAX 100
+#   define MOUSEKEY_WHEEL_TIME_TO_MAX 100
 #endif
 
 /* Flash */
@@ -39,5 +41,17 @@
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 200U // Timeout window in ms in which the double tap can occur.
 
 // COMBOS
-#define COMBO_VARIABLE_LEN
-#define COMBO_TERM 50
+#ifdef COMBO_ENABLE
+#   define COMBO_VARIABLE_LEN
+#   define COMBO_TERM 50
+#endif
+
+// controlling rbg (currently not working maybe check discord)
+//https://docs.splitkb.com/hc/en-us/articles/5799904122012-Onboard-RGB
+
+// #undef RGB_DI_PIN
+// #define RGB_DI_PIN 25
+// #undef RGBLED_NUM
+// #define RGBLED_NUM 2
+// #undef RGBLED_SPLIT
+// #define RGBLED_SPLIT {1, 1}
