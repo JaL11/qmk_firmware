@@ -46,6 +46,10 @@
 #   define COMBO_TERM 50
 #endif
 
+#ifdef TAP_DANCE_ENABLE
+#   define TAPPING_TERM 175
+// #   define TAPPING_TERM_PER_KEY
+#endif
 // controlling rbg (currently not working maybe check discord)
 //https://docs.splitkb.com/hc/en-us/articles/5799904122012-Onboard-RGB
 

@@ -30,3 +30,6 @@ COMBO_ENABLE = yes
 
 ### Caps word
 CAPS_WORD_ENABLE = yes
+
+### Enable tap dance see https://docs.qmk.fm/#/feature_tap_dance?id=how-to-use
+TAP_DANCE_ENABLE = yes
