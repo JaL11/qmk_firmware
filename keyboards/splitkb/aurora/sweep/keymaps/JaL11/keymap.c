@@ -70,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NUMBERS] = LAYOUT(
       KC_1,    KC_2,    KC_3,    KC_4,    KC_5,         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-      KC_TAB,   KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______,
+      KC_TAB,  KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,      KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_MINS,
       KC_LCTL, _______, _______, KC_MUTE, KC_VOLD,      KC_HOME, KC_END,  _______, _______, _______,
                                  _______, _______,      _______, _______
     ),
@@ -83,11 +83,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_MISC] = LAYOUT(
-      _______,  _______,  _______,  _______,  _______,         _______,   _______,   _______,   _______,   _______,
-      BL_TOGG, BL_BRTG, KC_TAB, KC_LALT, _______,       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  KC_F12,
-      BL_STEP, _______, _______, _______ _______,       _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______,      _______, _______, _______, _______, _______,
+      BL_TOGG, BL_BRTG, KC_TAB, KC_LALT,  _______,      KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  KC_F12,
+      BL_STEP, _______, _______, _______, _______,      _______, _______, _______, _______, _______,
                                  _______, _______,      _______, _______
     ),
+
+
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
@@ -103,6 +105,14 @@ void keyboard_pre_init_user(void) {
   writePinHigh(24);
 }
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case TD(TD_Q_ESC):
+            return TAPPING_TERM + 75;
+        default:
+            return TAPPING_TERM;
+    }
+}
 
 
 

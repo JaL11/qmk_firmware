@@ -36,9 +36,12 @@
 #   define MOUSEKEY_WHEEL_TIME_TO_MAX 100
 #endif
 
-/* Flash */
-#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET              // Activates the double-tap behavior
-#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 200U // Timeout window in ms in which the double tap can occur.
+// /* Flash */
+// #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET              // Activates the double-tap behavior
+// #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 400U // Timeout window in ms in which the double tap can occur.
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
+// #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED GP17
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500U
 
 // COMBOS
 #ifdef COMBO_ENABLE
@@ -48,7 +51,7 @@
 
 #ifdef TAP_DANCE_ENABLE
 #   define TAPPING_TERM 175
-// #   define TAPPING_TERM_PER_KEY
+#   define TAPPING_TERM_PER_KEY
 #endif
 // controlling rbg (currently not working maybe check discord)
 //https://docs.splitkb.com/hc/en-us/articles/5799904122012-Onboard-RGB

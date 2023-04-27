@@ -1,6 +1,6 @@
 //  name            result              chord keys
 COMB(AB_ESC,        KC_M,               KC_H, KC_J)
-COMB(CAPS_WORD,     CW_TOGG,            KC_A, KC_ENT)
+COMB(CAPS_WORD,     CW_TOGG,            HM_A, HM_SCLN)
 
 
 SUBS(helloWorld, "QMK is pretty rad eh?", KC_H, KC_J)
@@ -38,5 +38,6 @@ COMB(cvGrv,      KC_GRV,   KC_C, KC_V)
 COMB(xcTild,     KC_TILD,  KC_X, KC_C)
 COMB(mcmBacksl,  KC_BSLS,  KC_M, KC_COMM)
 COMB(cmdotPipe,  KC_PIPE,  KC_COMM, KC_DOT)
+
 
 COMB(capsWord,   CW_TOGG,  HM_F, HM_J)
