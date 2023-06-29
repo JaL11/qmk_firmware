@@ -21,8 +21,9 @@ CONVERT_TO=promicro_rp2040
 ENCODER_ENABLE = no
 OLED_ENABLE = no
 
-RGBLIGHT_ENABLE = yes
-WS2812_DRIVER = vendor # Use the RP2040's PIO interface
+# Enable RGB see https://docs.splitkb.com/hc/en-us/articles/5799904122012-Onboard-RGB
+# RGBLIGHT_ENABLE = yes
+# WS2812_DRIVER = vendor # Use the RP2040's PIO interface
 
 ### NEEDED FOR COMBOS
 VPATH += keyboards/gboards

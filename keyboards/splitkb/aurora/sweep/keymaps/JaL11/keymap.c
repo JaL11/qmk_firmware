@@ -179,23 +179,13 @@ void matrix_scan_user(void) { // The very important timer.
 //     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
 // }
 
-// void housekeeping_task_user(void) {
-//     switch (get_highest_layer(layer_state | default_layer_state)) {
-//         case 0:
-//             // Default layer
-//             rgblight_setrgb_at(RGB_BLACK, 0);
-//             break;
-//         case 1:
-//             rgblight_setrgb_at(RGB_RED, 0);
-//             break;
-//         case 2:
-//             rgblight_setrgb_at(RGB_GREEN, 0);
-//             break;
-//         case 3:
-//             rgblight_setrgb_at(RGB_BLUE, 0);
-//             break;
-//     }
+// void keyboard_post_init_user(void) {
+//     // Initialize RGB to static black
+//     rgblight_enable_noeeprom();
+//     rgblight_sethsv_noeeprom(HSV_BLACK);
+//     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
 // }
+
 
 #ifdef OLED_ENABLE
 bool oled_task_user(void) {
