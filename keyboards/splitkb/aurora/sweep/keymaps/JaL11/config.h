@@ -42,6 +42,7 @@
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
 // #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED GP17
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500U
+// #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED GP17 // Specify a optional status led by GPIO number which blinks when entering the bootloader
 
 // COMBOS
 #ifdef COMBO_ENABLE
@@ -49,8 +50,9 @@
 #   define COMBO_TERM 50
 #endif
 
+#define TAPPING_TERM 150
+
 #ifdef TAP_DANCE_ENABLE
-#   define TAPPING_TERM 175
 #   define TAPPING_TERM_PER_KEY
 #endif
 

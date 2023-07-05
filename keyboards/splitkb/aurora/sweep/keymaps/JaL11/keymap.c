@@ -92,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_MISC] = LAYOUT(
       CW_TOGG, _______, _______, _______, _______,      _______, _______, _______, _______, _______,
       ALT_TAB, BL_BRTG, KC_TAB,  ALT_TAB, _______,      KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  KC_F12,
-      BL_STEP, _______, _______, _______, _______,      _______, _______, _______, _______, _______,
+      BL_STEP, BL_TOGG, _______, _______, _______,      _______, _______, _______, _______, _______,
                                  _______, _______,      _______, _______
     ),
 
@@ -170,13 +170,6 @@ void matrix_scan_user(void) { // The very important timer.
 //             rgblight_setrgb_at(RGB_BLUE, 0);
 //             break;
 //     }
-// }
-
-// void keyboard_post_init_user(void) {
-//     // Initialize RGB to static black
-//     rgblight_enable_noeeprom();
-//     rgblight_sethsv_noeeprom(HSV_BLACK);
-//     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
 // }
 
 // void keyboard_post_init_user(void) {

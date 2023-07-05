@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# BACKLIGHT_ENABLE = yes
+
 #Bootloader selection
 BOOTLOADER = rp2040
 # Convert from Elite-C to standard RP2040
