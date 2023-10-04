@@ -22,7 +22,10 @@
 
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
+// raise encoder resolution to prevent skipping
+#define ENCODER_RESOLUTION 2
 
+// default values set previously
 #define RGB_DISABLE_WHEN_USB_SUSPENDED
 #define RGB_MATRIX_KEYPRESSES
 #define ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
