@@ -25,6 +25,10 @@
 // raise encoder resolution to prevent skipping
 #define ENCODER_RESOLUTION 2
 
+// set liatris led to capslock
+#define LED_CAPS_LOCK_PIN 24
+#define LED_PIN_ON_STATE 0
+
 // default values set previously
 #define RGB_DISABLE_WHEN_USB_SUSPENDED
 #define RGB_MATRIX_KEYPRESSES
