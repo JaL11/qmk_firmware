@@ -32,13 +32,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // LOWER LAYER used for numbers and shortcuts on the left and for navigation on right hand side
   	[1] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        KC_TAB,   KC_1,  KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,   KC_7,    KC_8,    KC_9,    KC_0,    _______,
+    KC_TAB,   KC_1,  KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,   KC_7,    KC_8,    KC_9,    KC_0,    _______,
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        CTRL_F10, KC_F5, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_PGUP, XXXXXXX,
+    CTRL_F10, KC_F5, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_PGUP, XXXXXXX,
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        CTRL_F9, CTRL_F10, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR, _______, _______, KC_HOME, KC_END, XXXXXXX, XXXXXXX, KC_PGDN, XXXXXXX,
+    CTRL_F9, CTRL_F10, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR, _______, _______, KC_HOME, KC_END, XXXXXXX, XXXXXXX, KC_PGDN, XXXXXXX,
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
                             _______, _______, KC_LGUI, _______, KC_SPC,  KC_ENT, MO(3), KC_RALT, _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -71,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,_______, _______,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                     _______, _______, KC_LGUI, _______, KC_SPC,       KC_ENT, _______, KC_RALT, _______, _______
     ),
-    // GAMING LAYER for vidja gams
+    // GAMING LAYER for vidja gams currently WIP #TODO
     [4] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       QK_GESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,    KC_7,    KC_8,    KC_9,   KC_0, KC_MINS,
